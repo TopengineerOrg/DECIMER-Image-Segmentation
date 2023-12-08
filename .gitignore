@@ -13,6 +13,8 @@ build/
 develop-eggs/
 dist/
 downloads/
+dataset/
+decimer_segmentation/mask_rcnn_molecule.h5
 eggs/
 .eggs/
 lib/
@@ -80,7 +82,7 @@ celerybeat-schedule
 
 # virtualenv
 venv/
-ENV/
+env_37/
 
 # Spyder project settings
 .spyderproject
