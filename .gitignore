@@ -14,7 +14,9 @@ develop-eggs/
 dist/
 downloads/
 dataset/
+*.h5
 decimer_segmentation/mask_rcnn_molecule.h5
+logs/
 eggs/
 .eggs/
 lib/

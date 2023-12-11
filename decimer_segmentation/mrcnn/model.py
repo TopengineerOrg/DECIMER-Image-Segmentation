@@ -26,10 +26,11 @@ from tensorflow.python.eager import context
 import tensorflow.keras.models as KM
 
 
-from . import utils
+#from . import utils
+import utils
 from distutils.version import LooseVersion
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "3"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 gpus = tf.config.experimental.list_physical_devices("GPU")
 for gpu in gpus:
@@ -2375,6 +2376,7 @@ class MaskRCNN(object):
             The path of the last checkpoint file
         """
         # Get directory names. Each directory corresponds to a model
+        print("DIR: ",self.model_dir)
         dir_names = next(os.walk(self.model_dir))[1]
         key = self.config.NAME.lower()
         dir_names = filter(lambda f: f.startswith(key), dir_names)
