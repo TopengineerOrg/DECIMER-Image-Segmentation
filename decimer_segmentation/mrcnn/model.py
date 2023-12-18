@@ -24,14 +24,16 @@ import tensorflow.keras.layers as KL
 import tensorflow.keras.utils as KU
 from tensorflow.python.eager import context
 import tensorflow.keras.models as KM
+from tensorflow.keras.callbacks import ProgbarLogger
 
 
 from . import utils
 #import utils
 from distutils.version import LooseVersion
 
+print("Estamos seleccionando este gpu 0")
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-
+#print(os.environ["CUDA_VISIBLE_DEVICES"])
 gpus = tf.config.experimental.list_physical_devices("GPU")
 for gpu in gpus:
     tf.config.experimental.set_memory_growth(gpu, True)
@@ -2363,7 +2365,7 @@ class MaskRCNN(object):
 
         # Add multi-GPU support.
         if config.GPU_COUNT > 1:
-            from mrcnn.parallel_model import ParallelModel
+            from .parallel_model import ParallelModel
 
             model = ParallelModel(model, config.GPU_COUNT)
 
@@ -2498,7 +2500,7 @@ class MaskRCNN(object):
 
         # Compile
         self.keras_model.compile(
-            optimizer=optimizer, loss=[None] * len(self.keras_model.outputs),verbose=1
+            optimizer=optimizer, loss=[None] * len(self.keras_model.outputs)
         )
 
         # Add metrics for losses
@@ -2645,6 +2647,7 @@ class MaskRCNN(object):
         assert self.mode == "training", "Create model in training mode."
 
         # Pre-defined layer regular expressions
+        print("Pre-defined layer regular expressions")
         layer_regex = {
             # all layers but the backbone
             "heads": r"(mrcnn\_.*)|(rpn\_.*)|(fpn\_.*)",
@@ -2659,12 +2662,14 @@ class MaskRCNN(object):
             layers = layer_regex[layers]
 
         # Data generators
+        print("Data generators")
         train_generator = DataGenerator(
             train_dataset, self.config, shuffle=True, augmentation=augmentation
         )
         val_generator = DataGenerator(val_dataset, self.config, shuffle=True)
 
         # Create log_dir if it does not exist
+        print("Create log_dir if it does not exist")
         if not os.path.exists(self.log_dir):
             os.makedirs(self.log_dir)
 
@@ -2682,6 +2687,7 @@ class MaskRCNN(object):
         ]
 
         # Add custom callbacks to the list
+        print("Add custom callbacks to the list")
         if custom_callbacks:
             callbacks += custom_callbacks
 
@@ -2698,7 +2704,8 @@ class MaskRCNN(object):
             workers = 0
         else:
             workers = multiprocessing.cpu_count()
-
+        print("workers",workers)
+        print("Starting the training process...")
         self.keras_model.fit(
             train_generator,
             initial_epoch=self.epoch,
@@ -2710,7 +2717,9 @@ class MaskRCNN(object):
             max_queue_size=100,
             workers=workers,
             use_multiprocessing=workers > 1,
+            verbose=2
         )
+        print("Ending the training process...")
         self.epoch = max(self.epoch, epochs)
 
     def mold_inputs(self, images):
