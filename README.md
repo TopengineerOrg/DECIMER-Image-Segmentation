@@ -76,10 +76,6 @@ segments = segment_chemical_structures_from_file(path, expand=True, poppler_path
 - The method segment_chemical_structures_from_file() takes a 'poppler_path' argument where the user can specify the path of their poppler installation ('PATH/TO/POPPLER/bin').
 
 
-
-
-  
-  
 ## Authors 
 - [Kohulan](https://github.com/Kohulan)
 - [Otto Brinkhaus](https://github.com/OBrink)

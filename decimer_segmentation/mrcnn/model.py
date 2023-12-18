@@ -26,8 +26,8 @@ from tensorflow.python.eager import context
 import tensorflow.keras.models as KM
 
 
-#from . import utils
-import utils
+from . import utils
+#import utils
 from distutils.version import LooseVersion
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -2498,7 +2498,7 @@ class MaskRCNN(object):
 
         # Compile
         self.keras_model.compile(
-            optimizer=optimizer, loss=[None] * len(self.keras_model.outputs)
+            optimizer=optimizer, loss=[None] * len(self.keras_model.outputs),verbose=1
         )
 
         # Add metrics for losses

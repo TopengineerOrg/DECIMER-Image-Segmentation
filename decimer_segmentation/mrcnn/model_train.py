@@ -215,7 +215,7 @@ def train(model):
         dataset_train,
         dataset_val,
         learning_rate=config.LEARNING_RATE,
-        epochs=2,
+        epochs=1,
         layers="heads",
     )
 
@@ -394,6 +394,7 @@ if __name__ == "__main__":
         #     exclude=["mrcnn_class_logits", "mrcnn_bbox_fc", "mrcnn_bbox", "mrcnn_mask"],
         # )
         try:
+            model.load_weights(weights_path, by_name=True,)
             model.load_weights(weights_path, by_name=True,)
             print("Load Model Succesfully. Time 1")
         except:
