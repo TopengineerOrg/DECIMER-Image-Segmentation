@@ -30,7 +30,7 @@ from . import utils
 #import utils
 from distutils.version import LooseVersion
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+#os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 gpus = tf.config.experimental.list_physical_devices("GPU")
 for gpu in gpus:
@@ -2518,7 +2518,7 @@ class MaskRCNN(object):
         """
         # Print message on the first call (but not on recursive calls)
         if verbose > 0 and keras_model is None:
-            log("Selecting layers to train")
+            print("Selecting layers to train")
 
         keras_model = keras_model or self.keras_model
 
@@ -2686,8 +2686,8 @@ class MaskRCNN(object):
             callbacks += custom_callbacks
 
         # Train
-        log("\nStarting at epoch {}. LR={}\n".format(self.epoch, learning_rate))
-        log("Checkpoint Path: {}".format(self.checkpoint_path))
+        print("\nStarting at epoch {}. LR={}\n".format(self.epoch, learning_rate))
+        print("Checkpoint Path: {}".format(self.checkpoint_path))
         self.set_trainable(layers)
         self.compile(learning_rate, self.config.LEARNING_MOMENTUM)
 
@@ -2845,9 +2845,9 @@ class MaskRCNN(object):
         ), "len(images) must be equal to BATCH_SIZE"
 
         if verbose:
-            log("Processing {} images".format(len(images)))
+            print("Processing {} images".format(len(images)))
             for image in images:
-                log("image", image)
+                print("image", image)
 
         # Mold inputs to format expected by the neural network
         molded_images, image_metas, windows = self.mold_inputs(images)
@@ -2867,9 +2867,9 @@ class MaskRCNN(object):
         anchors = np.broadcast_to(anchors, (self.config.BATCH_SIZE,) + anchors.shape)
 
         if verbose:
-            log("molded_images", molded_images)
-            log("image_metas", image_metas)
-            log("anchors", anchors)
+            print("molded_images", molded_images)
+            print("image_metas", image_metas)
+            print("anchors", anchors)
         # Run object detection
         detections, _, _, mrcnn_mask, _, _, _ = self.keras_model.predict(
             [molded_images, image_metas, anchors], verbose=0
@@ -2919,9 +2919,9 @@ class MaskRCNN(object):
         ), "Number of images must be equal to BATCH_SIZE"
 
         if verbose:
-            log("Processing {} images".format(len(molded_images)))
+            print("Processing {} images".format(len(molded_images)))
             for image in molded_images:
-                log("image", image)
+                print("image", image)
 
         # Validate image sizes
         # All images in a batch MUST be of the same size
@@ -2936,9 +2936,9 @@ class MaskRCNN(object):
         anchors = np.broadcast_to(anchors, (self.config.BATCH_SIZE,) + anchors.shape)
 
         if verbose:
-            log("molded_images", molded_images)
-            log("image_metas", image_metas)
-            log("anchors", anchors)
+            print("molded_images", molded_images)
+            print("image_metas", image_metas)
+            print("anchors", anchors)
         # Run object detection
         detections, _, _, mrcnn_mask, _, _, _ = self.keras_model.predict(
             [molded_images, image_metas, anchors], verbose=0
